@@ -7,8 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.bean.Produto;
 
@@ -62,4 +60,44 @@ public class ProdutoDAO {
         
         return produtos;
     }
+    
+    public void update(Produto p){
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        
+        try{
+            stmt = con.prepareStatement("UPDATE produto SET descricao=?, qtd=?, preco=? WHERE id=?");
+            stmt.setString(1, p.getDescricao());
+            stmt.setInt(2, p.getQtd());
+            stmt.setDouble(3, p.getPreco());
+            stmt.setInt(4, p.getId());
+            
+            stmt.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Atualizado com Sucesso");
+        }catch (SQLException ex){
+            JOptionPane.showMessageDialog(null, "Erro ao Atualizar"+ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+    }
+    
+    public void delete(Produto p){
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        
+        try{
+            stmt = con.prepareStatement("DELETE FROM produto WHERE id=?");
+            stmt.setInt(1, p.getId());
+            
+            stmt.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Excluido com Sucesso");
+        }catch (SQLException ex){
+            JOptionPane.showMessageDialog(null, "Erro ao Excluir"+ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+    }
+    
 }

@@ -103,13 +103,13 @@ public class ViewJTable extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1)
-                        .addGap(29, 29, 29)
-                        .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1)
                     .addComponent(txtDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(txtQtd, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -120,8 +120,9 @@ public class ViewJTable extends javax.swing.JFrame {
                                 .addGap(30, 30, 30))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addContainerGap(199, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
                         .addComponent(jToggleButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
@@ -151,7 +152,7 @@ public class ViewJTable extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "DESCEIÇAO", "QTD", "PREÇO"
+                "ID", "DESCRIÇAO", "QTD", "PREÇO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -227,36 +228,56 @@ public class ViewJTable extends javax.swing.JFrame {
         
         //System.out.println("Linha Selecionada"+jTProdutos.getSelectedRow());
         if(jTProdutos.getSelectedRow() != -1){
-            DefaultTableModel dtmProdutos = (DefaultTableModel) jTProdutos.getModel();
-            dtmProdutos.removeRow(jTProdutos.getSelectedRow());
+            Produto p = new Produto();
+            ProdutoDAO dao = new ProdutoDAO();
+
+            p.setId((int)jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 0));
+            dao.delete(p);
+
+            txtDesc.setText("");
+            txtQtd.setText("");
+            txtPreco.setText("");
+
+            readJTable();
         }else{
             JOptionPane.showMessageDialog(null, "Selecione um Produto para Excluir");
-        }
+        } 
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void jTProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTProdutosMouseClicked
         
         if(jTProdutos.getSelectedRow() != -1){
-            txtDesc.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 0).toString());
-            txtQtd.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 1).toString());
-            txtPreco.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 2).toString());
+            txtDesc.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 1).toString());
+            txtQtd.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 2).toString());
+            txtPreco.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 3).toString());
         }
     }//GEN-LAST:event_jTProdutosMouseClicked
 
     private void jTProdutosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTProdutosKeyReleased
         if(jTProdutos.getSelectedRow() != -1){
-            txtDesc.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 0).toString());
-            txtQtd.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 1).toString());
-            txtPreco.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 2).toString());
+            txtDesc.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 1).toString());
+            txtQtd.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 2).toString());
+            txtPreco.setText(jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 3).toString());
         }
     }//GEN-LAST:event_jTProdutosKeyReleased
 
     private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
   
         if(jTProdutos.getSelectedRow() != -1){
-            jTProdutos.setValueAt(txtDesc.getText(), jTProdutos.getSelectedRow(), 0);
-            jTProdutos.setValueAt(txtDesc.getText(), jTProdutos.getSelectedRow(), 1);
-            jTProdutos.setValueAt(txtDesc.getText(), jTProdutos.getSelectedRow(), 2);
+            Produto p = new Produto();
+            ProdutoDAO dao = new ProdutoDAO();
+
+            p.setDescricao(txtDesc.getText());
+            p.setQtd(Integer.parseInt(txtQtd.getText()));
+            p.setPreco(Double.parseDouble(txtPreco.getText()));
+            p.setId((int)jTProdutos.getValueAt(jTProdutos.getSelectedRow(), 0));
+            dao.update(p);
+
+            txtDesc.setText("");
+            txtQtd.setText("");
+            txtPreco.setText("");
+
+            readJTable();
         }
     }//GEN-LAST:event_jToggleButton2ActionPerformed
 

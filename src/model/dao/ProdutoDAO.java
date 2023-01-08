@@ -60,6 +60,36 @@ public class ProdutoDAO {
         
         return produtos;
     }
+    public List<Produto> readForDesc(String desc){
+        
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<Produto> produtos = new ArrayList<>();
+        
+        try{
+            stmt = con.prepareStatement("SELECT * FROM produto WHERE descricao LIKE ?");
+            stmt.setString(1, "%"+desc+"%");
+            
+            rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                Produto produto = new Produto();
+                
+                produto.setId(rs.getInt("id"));
+                produto.setDescricao(rs.getString("descricao"));
+                produto.setQtd(rs.getInt("qtd"));
+                produto.setPreco(rs.getDouble("preco"));
+                produtos.add(produto);
+            }
+        }catch (SQLException ex){
+            JOptionPane.showMessageDialog(null, "ERRO AO CARREGAR DADOS"+ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+        
+        return produtos;
+    }
     
     public void update(Produto p){
         Connection con = ConnectionFactory.getConnection();

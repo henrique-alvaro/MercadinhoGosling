@@ -77,7 +77,7 @@ public class ViewComboBox extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Produto produto = (Produto) cbProdutos.getSelectedItem();
-        JOptionPane.showMessageDialog(null, "ID"+produto.getId()+" - DESC"+produto.getDescricao());
+        JOptionPane.showMessageDialog(null, "ID"+produto.getId()+" - DESC "+produto.getDescricao());
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
